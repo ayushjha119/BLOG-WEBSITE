@@ -5,6 +5,7 @@ import User from "./Schema/User.js";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import cors from "cors";
 
 const server = express();
 let PORT = 3000;
@@ -13,6 +14,7 @@ let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for e
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
 server.use(express.json());
+server.use(cors());
 
 mongoose.connect(process.env.DB_LOCATION, {
   autoIndex: true,
