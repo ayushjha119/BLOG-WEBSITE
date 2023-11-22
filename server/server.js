@@ -85,6 +85,33 @@ server.post("/signup", (req, res) => {
   });
 });
 
+server.post("/signin", (req, res) => {
+  let { email, password } = req.body;
+
+  User.findOne({ "personal_info.email": email })
+    .then((user) => {
+      if (!user) {
+        return res.status(403).json({ error: "Email does not exist" });
+      }
+      bcrypt.compare(password, user.personal_info.password, (err, result) => {
+        if (err) {
+          return res
+            .status(403)
+            .json({ error: "Error occurred while login please try again" });
+        }
+        if (!result) {
+          return res.status(403).json({ error: "Password is incorrect" });
+        } else {
+          return res.status(200).json(formatDatatoSend(user));
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json({ error: err.message });
+    });
+});
+
 server.listen(PORT, () => {
   console.log(`Server running at port ${PORT}`);
 });
