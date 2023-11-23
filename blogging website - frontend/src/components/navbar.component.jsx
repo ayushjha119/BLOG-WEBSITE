@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
 import logo from "../imgs/logo.png";
 import { useState } from "react";
+import { UserContext } from "../App";
+import UserNavigationPanel from "./user-navigation.component";
 const Navbar = () => {
   const [searchBoxVisibility, setsearchBoxVisibility] = useState(false);
+  const [userNavPannel, setUserNavPannel] = useState(false);
+
+  const {
+    userAuth,
+    userAuth: { access_token, profile_img },
+  } = useContext(UserContext);
+
+  const handleUserNavPannel = () => {
+    setUserNavPannel((currentVal) => !currentVal);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setUserNavPannel(false);
+    }, 500);
+  };
 
   return (
     <>
@@ -45,12 +63,38 @@ const Navbar = () => {
             <i className="fi fi-rr-file-edit"></i>
             <p>Write</p>
           </Link>
-          <Link className="btn-dark py-2" to="/signin">
-            Sign In
-          </Link>
-          <Link className="btn-light py-2 hidden md:block" to="/signup">
-            Sign Up
-          </Link>
+
+          {access_token ? (
+            <>
+              <Link to="/dashboard/notification">
+                <button className="w-12 h-12 rounded-full bg-grey relative hover: bg-black/10 ">
+                  <i className="fi fi-rr-bell text-2xl block mt-1"></i>
+                </button>
+              </Link>
+              <div
+                className="relative"
+                onClick={handleUserNavPannel}
+                onBlur={handleBlur}
+              >
+                <button className="w-12 h-12 mt-1">
+                  <img
+                    src={profile_img}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                </button>
+                {userNavPannel ? <UserNavigationPanel /> : ""}
+              </div>
+            </>
+          ) : (
+            <>
+              <Link className="btn-dark py-2" to="/signin">
+                Sign In
+              </Link>
+              <Link className="btn-light py-2 hidden md:block" to="/signup">
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
