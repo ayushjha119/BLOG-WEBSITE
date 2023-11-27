@@ -14,7 +14,7 @@ const Tag = ({ tag, tagIndex }) => {
   };
 
   const handleTagEdit = (e) => {
-    if (e.keyCode === 13 || e.keyCode === 188) {
+    if (e.keyCode == 13 || e.keyCode == 188) {
       e.preventDefault();
       let currentTag = e.target.innerText;
       tags[tagIndex] = currentTag;
@@ -30,7 +30,7 @@ const Tag = ({ tag, tagIndex }) => {
   };
 
   return (
-    <div className="relative p-2 mt-2 mr-2 px-5 bg-white rounded-full inline-block hover:bg-opacity-50 pr-10 ">
+    <div className="relative p-2 mt-2 mr-2 px-5 bg-white rounded-full inline-block hover:bg-opacity-50 pr-10">
       <p
         className="outline-none"
         onKeyDown={handleTagEdit}
