@@ -237,22 +237,25 @@ server.post("/create-blog", verifyJWT, (req, res) => {
   if (!title.length) {
     return res.status(403).json({ error: "Title cannot be empty" });
   }
-  if (!des.length || des.length > 200) {
-    return res.status(403).json({
-      error: "Description cannot be empty or more than 200 characters",
-    });
+  if (!draft) {
+    if (!des.length || des.length > 200) {
+      return res.status(403).json({
+        error: "Description cannot be empty or more than 200 characters",
+      });
+    }
+    if (!banner.length) {
+      return res.status(403).json({ error: "Banner cannot be empty" });
+    }
+    if (!content.blocks.length) {
+      return res.status(403).json({ error: "Content cannot be empty" });
+    }
+    if (!tags.length || tags.length > 10) {
+      return res
+        .status(403)
+        .json({ error: "Tags cannot be empty or more than 10" });
+    }
   }
-  if (!banner.length) {
-    return res.status(403).json({ error: "Banner cannot be empty" });
-  }
-  if (!content.blocks.length) {
-    return res.status(403).json({ error: "Content cannot be empty" });
-  }
-  if (!tags.length || tags.length > 10) {
-    return res
-      .status(403)
-      .json({ error: "Tags cannot be empty or more than 10" });
-  }
+
   tags = tags.map((tag) => tag.toLowerCase());
 
   let blog_id =
