@@ -10,17 +10,17 @@
 
 # eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjQwY2I3ODRmZmE4OTAzNmU1MzQ4MSIsImlhdCI6MTcwMTA1NTY3MX0.8K6l33Air1U5brtn3WSqzGtkBGMRzIMpj61xJy58lEg
 
-POST http://localhost:3000/create-blog
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjMzNjAwMTVlMGVhNGE5OGExNjY3NSIsImlhdCI6MTcwMTAwMDcwNX0.mevCuUP3dPf5y_-Jz_QuUPP_8N6LLXZdDvdRlfO0NE0
-Content-Type: application/json
+GET http://localhost:3000/latest-blogs
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjMzNjAwMTVlMGVhNGE5OGExNjY3NSIsImlhdCI6MTcwMTAwMDcwNX0.mevCuUP3dPf5y_-Jz_QuUPP_8N6LLXZdDvdRlfO0NE0
+# Content-Type: application/json
 
-{
-    "title": "My # $$$  2 365 first @ blog title",
-    "banner": "https://www.google.com/image",
-    "des": "This is my first blog des",
-    "content": {
-        "blocks": [1,2]
-    },
-    "tags": ["tag1", "tag2"]
+# {
+#     "title": "My # $$$  2 365 first @ blog title",
+#     "banner": "https://www.google.com/image",
+#     "des": "This is my first blog des",
+#     "content": {
+#         "blocks": [1,2]
+#     },
+#     "tags": ["tag1", "tag2"]
      
-}
+# }
