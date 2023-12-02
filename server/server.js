@@ -231,7 +231,9 @@ server.post("/google-auth", async (req, res) => {
     });
 });
 
-server.get("/latest-blogs", (req, res) => {
+server.post("/latest-blogs", (req, res) => {
+  let { page } = req.body;
+
   let maxLimit = 4;
   Blog.find({ draft: false })
     .populate(
@@ -240,9 +242,20 @@ server.get("/latest-blogs", (req, res) => {
     )
     .sort({ publishedAt: -1 })
     .select("blog_id title des banner activity tags publishedAt -_id")
+    .skip((page - 1) * maxLimit)
     .limit(maxLimit)
     .then((blogs) => {
       return res.status(200).json({ blogs });
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err.message });
+    });
+});
+
+server.post("/all-latest-blogs-count", (req, res) => {
+  Blog.countDocuments({ draft: false })
+    .then((count) => {
+      return res.status(200).json({ totalDocs: count });
     })
     .catch((err) => {
       return res.status(500).json({ error: err.message });
@@ -272,9 +285,9 @@ server.get("/trending-blogs", (req, res) => {
 });
 
 server.post("/search-blogs", (req, res) => {
-  let { tag } = req.body;
+  let { tag, page } = req.body;
   let findQuery = { tags: tag, draft: false };
-  let maxLimit = 3;
+  let maxLimit = 2;
   Blog.find(findQuery)
     .populate(
       "author",
@@ -282,9 +295,22 @@ server.post("/search-blogs", (req, res) => {
     )
     .sort({ publishedAt: -1 })
     .select("blog_id title des banner activity tags publishedAt -_id")
+    .skip((page - 1) * maxLimit)
     .limit(maxLimit)
     .then((blogs) => {
       return res.status(200).json({ blogs });
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err.message });
+    });
+});
+
+server.post("/search-blogs-count", (req, res) => {
+  let { tag } = req.body;
+  let findQuery = { tags: tag, draft: false };
+  Blog.countDocuments(findQuery)
+    .then((count) => {
+      return res.status(200).json({ totalDocs: count });
     })
     .catch((err) => {
       return res.status(500).json({ error: err.message });
