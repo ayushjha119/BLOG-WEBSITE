@@ -5,6 +5,7 @@ import AnimationWrapper from "../common/page-animation";
 import Loader from "../components/loader.component";
 import { useContext } from "react";
 import { UserContext } from "../App";
+import AboutUser from "../components/about.component";
 
 export const profileDataStructure = {
   personal_info: {
@@ -90,6 +91,12 @@ const ProfilePage = () => {
                 " "
               )}
             </div>
+            <AboutUser
+              className="max-md:hidden"
+              bio={bio}
+              social_links={social_links}
+              joinedAt={joinedAt}
+            />
           </div>
         </section>
       )}
