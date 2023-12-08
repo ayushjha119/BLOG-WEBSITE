@@ -1,3 +1,25 @@
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css"; // choose the style you want
+import { useRef } from "react";
+import React from "react";
+import { useEffect } from "react";
+
+const CodeBlock = ({ value }) => {
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    hljs.highlightBlock(ref.current);
+  }, [value]);
+
+  return (
+    <pre>
+      <code ref={ref} className="bg-purple/10 p-1 px-2 rounded-md">
+        {value}
+      </code>
+    </pre>
+  );
+};
+
 const Img = ({ url, caption }) => {
   return (
     <div>
@@ -69,6 +91,10 @@ const BlogContent = ({ block }) => {
   if (type == "quote") {
     return <Quote quote={data.text} caption={data.caption} />;
   }
+  if (type == "inlineCode") {
+    return <CodeBlock value={data.code} />;
+  }
+
   if (type == "list") {
     return <List style={data.style} items={data.items} />;
   }
