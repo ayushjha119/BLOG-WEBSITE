@@ -4,6 +4,17 @@ import { useRef } from "react";
 import React from "react";
 import { useEffect } from "react";
 
+// const YouTubeEmbed = ({ embedUrl }) => (
+//   <div className="relative aspect-ratio-16/9">
+//     <iframe
+//       src={embedUrl}
+//       frameBorder="0"
+//       allowFullScreen
+//       className="absolute top-0 left-0 w-full h-full"
+//     ></iframe>
+//   </div>
+// );
+
 const CodeBlock = ({ value }) => {
   const ref = React.useRef(null);
 
@@ -98,6 +109,13 @@ const BlogContent = ({ block }) => {
   if (type == "list") {
     return <List style={data.style} items={data.items} />;
   }
+
+  // if (type === "embed" && data.service === "youtube") {
+  //   const embedUrl = data.embed.replace(/\?$/, "");
+  //   console.log(embedUrl);
+
+  //   return <YouTubeEmbed embedUrl={embedUrl} />;
+  // }
 };
 
 export default BlogContent;
