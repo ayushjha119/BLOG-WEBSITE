@@ -11,6 +11,7 @@ const CommentField = ({ action }) => {
       _id,
       author: { _id: blog_author },
       comments,
+      comments: { results: commentsArr },
       activity,
       activity: { total_comments, total_parent_comments },
     },
@@ -49,7 +50,7 @@ const CommentField = ({ action }) => {
         };
         let newCommentArr;
         data.childrenLevel = 0;
-        newCommentArr = [data];
+        newCommentArr = [data, ...commentsArr];
         let parentCommentIncrementVal = 1;
         setBlog({
           ...blog,
