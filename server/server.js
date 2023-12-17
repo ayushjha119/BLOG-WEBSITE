@@ -233,6 +233,62 @@ server.post("/google-auth", async (req, res) => {
     });
 });
 
+server.post("/change-password", verifyJWT, (req, res) => {
+  let { currentPassword, newPassword } = req.body;
+
+  if (
+    !passwordRegex.test(newPassword) ||
+    !passwordRegex.test(currentPassword)
+  ) {
+    return res.status(403).json({
+      error:
+        "Password must be at least 6 characters long and contain at least one number, one lowercase and one uppercase letter",
+    });
+  }
+  User.findOne({ _id: req.user })
+    .then((user) => {
+      if (user.google_auth) {
+        return res
+          .status(403)
+          .json({ error: "You can not change password of google account" });
+      }
+      bcrypt.compare(
+        currentPassword,
+        user.personal_info.password,
+        (err, result) => {
+          if (err) {
+            return res
+              .status(500)
+              .json({ error: "Some error occurred please try again" });
+          }
+          if (!result) {
+            return res
+              .status(403)
+              .json({ error: "Current password is incorrect" });
+          }
+          bcrypt.hash(newPassword, 10, (err, hashed_password) => {
+            User.findOneAndUpdate(
+              { _id: req.user },
+              { "personal_info.password": hashed_password }
+            )
+              .then((u) => {
+                return res.status(200).json({ status: "Password Changed" });
+              })
+              .catch((err) => {
+                return res.status(500).json({
+                  error:
+                    "some error occured while saving new password, please try again",
+                });
+              });
+          });
+        }
+      );
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: "User not found" });
+    });
+});
+
 server.post("/latest-blogs", (req, res) => {
   let { page } = req.body;
 

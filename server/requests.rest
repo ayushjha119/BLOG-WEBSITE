@@ -5,9 +5,11 @@
 #    "blog_id": "Horse-Blog-Horse-BlogHorse-BlogHorse-BlogPLiEb6HKIrEbPEEGeBJnB"
 # }
 
-POST http://localhost:3000/get-profile
+POST http://localhost:3000/change-password
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWUyNjJmN2ZhOGI0MzM5ZGFlZDZjOCIsImlhdCI6MTcwMjgyNTUxMX0.zqpcVG8SyTw9aoy6eZrrjvxHcWzmEmPnRAsmopVcTrM
 
 {
-   "username": "xyz"
+   "currentPassword": "Ayush123",
+   "newPassword": "Ayush1234"
 }
