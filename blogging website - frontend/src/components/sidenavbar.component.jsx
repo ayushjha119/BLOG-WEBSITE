@@ -77,7 +77,7 @@ const SideNav = () => {
             </NavLink>
 
             <NavLink
-              to="/dashboard/notification"
+              to="/dashboard/notifications"
               onClick={(e) => setPageState(e.target.innerText)}
               className="sidebar-link"
             >
@@ -87,8 +87,8 @@ const SideNav = () => {
                 new_notification_available ? <span className="bg-red w-2 h-2 rounded-full absolute z-10 top-0 right-0"></span> : ""
               }
             </div>
-            
-              Notification
+
+              Notifications
             </NavLink>
 
             <NavLink
