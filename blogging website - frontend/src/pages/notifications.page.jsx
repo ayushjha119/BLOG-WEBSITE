@@ -9,7 +9,7 @@ import NotificationsCard from "../components/notification-card.component.jsx"
 import LoadMoreDataBtn from "../components/load-more.component.jsx"
 
 const Notifications = () => {
-    let {userAuth: {access_token}} = useContext(UserContext)
+    let {userAuth,userAuth: {access_token, new_notification_available}, setUserAuth} = useContext(UserContext)
 
     const [filter, setFilter] = useState("all");
     const [notifications, setNotifications] = useState(null);
@@ -23,6 +23,10 @@ const Notifications = () => {
             }
         })
         .then(async({data: {notifications: data }}) => {
+            if(new_notification_available){
+                setUserAuth({...userAuth, new_notification_available: false})
+                
+            }
             let formatedData = await filterPaginationData({
                 state: notifications,
                 data, page,
@@ -72,7 +76,7 @@ const Notifications = () => {
                                 return <AnimationWrapper key={i} transition={{delay: i*0.08}}>
                                     <NotificationsCard data={notification} 
                                         index={i}
-                                        noticationState={{notifications, setNotifications}}
+                                        notificationState={{notifications, setNotifications}}
                                     />
                                 </AnimationWrapper>
                             }) :  <NoDataMessage  message="Nothing available"/>
