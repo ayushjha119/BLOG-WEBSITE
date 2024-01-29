@@ -767,7 +767,7 @@ const deleteComment = (_id) => {
       Notification.findOneAndDelete({ comment: _id }).then((notification) =>
         console.log("deleted notification")
       );
-      Notification.findOneAndDelete({ reply: _id }).then((notification) =>
+      Notification.findOneAndUpdate({ reply: _id }, {$unset: {reply: 1}}).then((notification) =>
         console.log("reply notification deleted")
       );
       Blog.findOneAndUpdate(
@@ -844,6 +844,11 @@ server.post("/notifications", verifyJWT, (req, res) => {
   .sort({createdAt: -1})
   .select("createdAt type seen reply")
   .then(notifications => {
+    Notification.updateMany(findQuery, {seen: true})
+    .skip(skipDocs)
+    .limit(maxLimit)
+    .then(() => console.log("Notifican seen"))
+
     return res.status(200).json({notifications})
   })
   .catch(err => {
