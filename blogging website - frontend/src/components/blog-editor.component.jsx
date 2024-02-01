@@ -1,18 +1,22 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import logo from "../imgs/logo.png";
+import LightLogo from "../imgs/logo-light.png";
+import DarkLogo from "../imgs/logo-dark.png";
 import AnimationWrapper from "../common/page-animation";
-import defaultBanner from "../imgs/blog banner.png";
+import lightBanner from "../imgs/blog banner light.png";
+import darkBanner from "../imgs/blog banner dark.png";
 import { uploadImage } from "../common/aws";
 import { useContext, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import Editor, { EditorContext } from "../pages/editor.pages";
 import EditorJS from "@editorjs/editorjs";
 import { tools } from "./tools.component";
-import { UserContext } from "../App";
+import { ThemeContext, UserContext } from "../App";
 import axios from "axios";
 
 const BlogEditor = () => {
   //let blogBannerRef = useRef();
+
+
 
   let {
     blog,
@@ -26,6 +30,8 @@ const BlogEditor = () => {
   let {
     userAuth: { access_token },
   } = useContext(UserContext);
+
+  let {theme} = useContext(ThemeContext)
 
   let { blog_id } = useParams();
 
@@ -81,7 +87,11 @@ const BlogEditor = () => {
 
   const handleError = (e) => {
     let img = e.target;
-    img.src = defaultBanner;
+    if (theme == "light") {
+      img.src = lightBanner;
+    } else {
+      img.src = darkBanner;
+    }
   };
 
   const handlePublishEvent = () => {
@@ -162,7 +172,7 @@ const BlogEditor = () => {
     <>
       <nav className="navbar">
         <Link to="/" className="flex-none w-10 ">
-          <img src={logo} />
+          <img src={theme == "light" ? DarkLogo : LightLogo} />
         </Link>
         <p className="max-md:hidden text-black line-clamp-1 w-full">
           {title.length ? title : "New blog"}
@@ -197,7 +207,7 @@ const BlogEditor = () => {
               defaultValue={title}
               placeholder="Blog Title"
               className="text-4xl font-medium w-full h-20 
-              outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
+              outline-none resize-none mt-10 leading-tight placeholder:opacity-40 bg-white"
               onKeyDown={handleTitleKeyDown}
               onChange={handleTitleChange}
             ></textarea>
