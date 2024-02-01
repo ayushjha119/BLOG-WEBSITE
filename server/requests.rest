@@ -11,13 +11,16 @@
 
 
 
-# POST http://localhost:3000/signin
-# Content-Type: application/json
+POST http://localhost:3000/user-written-blogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWUyNjJmN2ZhOGI0MzM5ZGFlZDZjOCIsImlhdCI6MTcwNjUyODM3NH0.kPkDlWKZUp1G-0QoyTv_5EK6TCIr30Cs7jryWxAeOj4
+Content-Type: application/json
 
-# {
-#    "email": "xyz@gmail.com",
-#    "password": "Ayush123"
-# }
+{
+   "page": 1,
+   "draft": false
 
-GET http://localhost:3000/new-notification
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWUyNjJmN2ZhOGI0MzM5ZGFlZDZjOCIsImlhdCI6MTcwNTY3MjA3OX0.ejj2ahKE5Ed3RAonT8QlzuAJxZ-oapgFNerbo4nR0jc
+}
+
+# GET http://localhost:3000/new-notification
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWUyNjJmN2ZhOGI0MzM5ZGFlZDZjOCIsImlhdCI6MTcwNTY3MjA3OX0.ejj2ahKE5Ed3RAonT8QlzuAJxZ-oapgFNerbo4nR0jc
+
