@@ -925,7 +925,7 @@ server.post("/delete-blog", verifyJWT, (req, res) => {
     Notification.deleteMany({blog: blog._id}).then(data => console.log('notification deleted'));
     Comment.deleteMany({blog_id: blog._id}).then(data => console.log('comments deleted'));  
 
-    User.findOneAndUpdate({_id: user_id}, {$pull: {blog: blog._id}, $inc: {"account_info.total_posts": -1}})
+    User.findOneAndUpdate({_id: user_id}, {$pull: {blog: blog._id}, $inc: {"account_info.total_posts": blog.draft ? 0 : -1}})
     .then(user => console.log("blog deleted from user"))
 
     return res.status(200).json({status: "done"})
