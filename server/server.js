@@ -61,13 +61,14 @@ const verifyJWT = (req, res, next) => {
       return res.status(403).json({ error: "Invalid access token" });
     }
     req.user = user.id;
+    req.admin = user.admin;
     next();
   });
 };
 
 const formatDatatoSend = (user) => {
   const access_token = jwt.sign(
-    { id: user._id },
+    { id: user._id, admin: user.admin },
     process.env.SECRET_ACCESS_KEY
   );
 
@@ -76,6 +77,7 @@ const formatDatatoSend = (user) => {
     profile_img: user.personal_info.profile_img,
     username: user.personal_info.username,
     fullname: user.personal_info.fullname,
+    isAdmin: user.admin,
   };
 };
 
@@ -481,6 +483,9 @@ server.post("/update-profile", verifyJWT, (req, res) => {
 
 server.post("/create-blog", verifyJWT, (req, res) => {
   let authorId = req.user;
+  let isAdmin = req.admin;
+  if(isAdmin){
+    
   let { title, des, banner, tags, content, draft, id } = req.body;
   if (!title.length) {
     return res.status(403).json({ error: "Title cannot be empty" });
@@ -558,6 +563,9 @@ server.post("/create-blog", verifyJWT, (req, res) => {
       .catch((err) => {
         return res.status(500).json({ error: err.message });
       });
+  }
+  }else{
+    return res.status(500).json({error: "You are not authorized to create blog"})
   }
 });
 
@@ -919,21 +927,28 @@ server.post("/user-written-blogs-count", verifyJWT, (req, res) => {
 
 server.post("/delete-blog", verifyJWT, (req, res) => {
   let user_id = req.user;
+  let isAdmin = req.admin;
   let {blog_id} = req.body;
-  Blog.findOneAndDelete({blog_id})
-  .then(blog => {
-    Notification.deleteMany({blog: blog._id}).then(data => console.log('notification deleted'));
-    Comment.deleteMany({blog_id: blog._id}).then(data => console.log('comments deleted'));  
 
-    User.findOneAndUpdate({_id: user_id}, {$pull: {blog: blog._id}, $inc: {"account_info.total_posts": blog.draft ? 0 : -1}})
-    .then(user => console.log("blog deleted from user"))
-
-    return res.status(200).json({status: "done"})
-
-  })
-  .catch(err => {
-    return res.status(500).json({error: err.message})
-  })
+  if(isAdmin){
+    Blog.findOneAndDelete({blog_id})
+    .then(blog => {
+      Notification.deleteMany({blog: blog._id}).then(data => console.log('notification deleted'));
+      Comment.deleteMany({blog_id: blog._id}).then(data => console.log('comments deleted'));  
+  
+      User.findOneAndUpdate({_id: user_id}, {$pull: {blog: blog._id}, $inc: {"account_info.total_posts": blog.draft ? 0 : -1}})
+      .then(user => console.log("blog deleted from user"))
+  
+      return res.status(200).json({status: "done"})
+  
+    })
+    .catch(err => {
+      return res.status(500).json({error: err.message})
+    })
+  }else{
+    return res.status(500).json({error: "You are not authorized to delete blog"})
+  }
+ 
 })
 
 
