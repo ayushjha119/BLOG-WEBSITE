@@ -1,4 +1,5 @@
 # .gitignore
 node_modules/
 .env
+request.rest
 geeksblogging2-firebase-adminsdk-zi2dt-e791a9d522.json
